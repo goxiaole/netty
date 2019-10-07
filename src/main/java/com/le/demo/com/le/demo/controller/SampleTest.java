@@ -21,9 +21,15 @@ public class SampleTest {
 
     @Test
     public void testSelect() {
-        indexController.a();
+        userMapper.delete(null);
+        try {
+            indexController.a();
+        }catch (Exception e){
+
+        }
         List<User> userList = userMapper.selectList(null);
         userList.forEach(System.out::println);
+        System.out.println("查询出的集合大小:"+userList.size());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.le.demo.com.le.demo.controller;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
@@ -9,19 +10,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class IndexController {
     @Autowired
     private UserMapper userMapper;
-
     @Transactional
     public void a(){
+        userMapper.insert(User.builder().id(1L).name("我没有事物").build());
+        try {
+            IndexController IndexController=(IndexController)AopContext.currentProxy();
+            IndexController.b();
 
-        userMapper.insert(User.builder().id(6L).name("2").build());
-        System.out.println("a");
-        b();
+        }catch (Exception e){
+        }finally {
+            System.out.println("执行完操作...");
         }
-
-    @Transactional(propagation= Propagation.REQUIRES_NEW)
+        int i= 1/0;
+        }
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void b(){
-        userMapper.insert(User.builder().id(7L).name("1").build());
-       int i= 1/0;
-        System.out.println("b");
+        userMapper.insert(User.builder().id(2L).name("我有事物").build());
+
     }
 }
+
+
